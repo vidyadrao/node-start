@@ -1,0 +1,9 @@
+{
+  "name": "file-tree",
+  "version": "1.0.1",
+  "description": "A module to walkthrough th file system",
+  "main": "walk-file.js",
+  "dependencies": {
+    "walk": "^2.3.9"
+  }
+}
