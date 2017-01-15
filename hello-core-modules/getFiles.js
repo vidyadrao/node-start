@@ -6,9 +6,16 @@ module.exports=(loc, callback) => {
         if(err){
             return callback(err);
         }
-        let arr=[], counter=0;
+        let arr=[], counter=0, hasError= false;;
         for(let a of files){
             fs.lstat(path.join(loc, a), (err, stat) => {
+                if(hasError)
+                    return;
+                if(err) {
+                    callback(err);
+                    hasError= true;
+                    return;
+                }
                counter++;
                if(stat.isFile()){
                    arr.push(a);
