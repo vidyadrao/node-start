@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>list</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+        content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/file_1.css"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/file_5.css"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/32px.png"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/40px.png"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/throbber.gif"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/file_7.css"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../assets/file_8.css"/>
+    
+
+    
+    <script src="../../assets/file_2.js"
+        type="text/javascript"></script>
+    
+    <script src="../../assets/file_3.js"
+        type="text/javascript"></script>
+    
+    <script src="../../assets/file_4.js"
+        type="text/javascript"></script>
+    
+    <script src="../../assets/file_6.js"
+        type="text/javascript"></script>
+    
+
+    <script type="application/json" id="jsTreeJSON">
+        [{"id":"src/routes/home","text":"home","icon":"jstree-folder","parent":"src/routes","a_attr":{"href":"home"},"state":{"opened":false}},{"id":"src","text":"src","icon":"jstree-folder","parent":"#","a_attr":{"href":".."},"state":{"opened":true}},{"id":"src/promises/fs.js","text":"fs.js","icon":"jstree-file","parent":"src/promises","a_attr":{"href":"../promises/fs.js.html"},"state":{"selected":false}},{"id":"src/routes","text":"routes","icon":"jstree-folder","parent":"src","a_attr":{"href":"."},"state":{"opened":true}},{"id":"src/routes/download.js","text":"download.js","icon":"jstree-file","parent":"src/routes","a_attr":{"href":"download.js.html"},"state":{"selected":false}},{"id":"src/routes/getStaticData.js","text":"getStaticData.js","icon":"jstree-file","parent":"src/routes","a_attr":{"href":"getStaticData.js.html"},"state":{"selected":false}},{"id":"src/promises","text":"promises","icon":"jstree-folder","parent":"src","a_attr":{"href":"../promises"},"state":{"opened":false}},{"id":"src/routes/home/index.js","text":"index.js","icon":"jstree-file","parent":"src/routes/home","a_attr":{"href":"home/index.js.html"},"state":{"selected":false}},{"id":"src/routes/list.js","text":"list.js","icon":"jstree-file","parent":"src/routes","a_attr":{"href":"list.js.html"},"state":{"selected":true}},{"id":"src/server.js","text":"server.js","icon":"jstree-file","parent":"src","a_attr":{"href":"../server.js.html"},"state":{"selected":false}},{"id":"src/static","text":"static","icon":"jstree-folder","parent":"src","a_attr":{"href":"../static"},"state":{"opened":false}},{"id":"src/static/script","text":"script","icon":"jstree-folder","parent":"src/static","a_attr":{"href":"../static/script"},"state":{"opened":false}},{"id":"src/static/script/jquery-3.1.1.js","text":"jquery-3.1.1.js","icon":"jstree-file","parent":"src/static/script","a_attr":{"href":"../static/script/jquery-3.1.1.js.html"},"state":{"selected":false}}]
+    </script>
+</head>
+<body class="markdown-body">
+<h1>
+    list
+</h1>
+<div class="subHeading">
+    src/routes/list.js
+</div>
+<button type="button" class="navigatorToggle">&#9776; files...</button>
+<nav class="navigationTree minimized">
+    <input type="text" id="jsTreeSearch" placeholder="search..."/>
+    <div></div>
+</nav>
+<section>
+    <ul class="sectionDetails codeOnly">
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+                
+            </div><div class="content">
+                <div class="highlight"><pre><span class="hljs-meta">"use strict"</span>;
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">const</span> promises = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../promises/fs'</span>);
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">{ dirname, includeFiles }</span>) =&gt;</span>
+    promises.lstat(dirname).then(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> {
+        <span class="hljs-keyword">if</span> (data.stat.isDirectory()) {
+            <span class="hljs-keyword">return</span> promises.readDir(dirname);
+        }
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'1. Not a directory'</span>);
+    }).then(<span class="hljs-function"><span class="hljs-params">listOfFiles</span> =&gt;</span>
+        <span class="hljs-built_in">Promise</span>.all(listOfFiles.map(<span class="hljs-function"><span class="hljs-params">file</span> =&gt;</span> promises.lstat(file)))
+    ).then(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> arr = [];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> {
+                stat,
+                fileName
+            } <span class="hljs-keyword">of</span> data) {
+            <span class="hljs-keyword">if</span> (stat.isDirectory()) {
+                arr.push({
+                    <span class="hljs-attr">fileName</span>: path.basename(fileName),
+                    <span class="hljs-attr">path</span>: fileName
+                });
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (stat.isFile() &amp;&amp; includeFiles === <span class="hljs-string">"true"</span>) {
+                arr.push({
+                    <span class="hljs-attr">fileName</span>: path.basename(fileName),
+                    <span class="hljs-attr">path</span>: fileName,
+                    <span class="hljs-attr">isFile</span>: <span class="hljs-literal">true</span>
+                });
+            }
+        }
+        <span class="hljs-keyword">return</span> arr;
+    });</pre></div>
+            </div>
+        </li>
+        
+    </ul>
+</section>
+</body>
+</html>

@@ -1,0 +1,45 @@
+li {
+  list-style-type: none;
+  vertical-align: top;
+}
+li::before {
+  content: " ";
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 5px;
+  background-size: contain;
+  background-image: url('/api/static/images/expand.jpg');
+}
+li.expanded::before {
+  content: " ";
+  background-image: url('/api/static/images/collapse.jpg');
+}
+#previewPane,
+#leftMenu {
+  display: inline-block;
+  vertical-align: top;
+}
+#leftMenu {
+  width: 40%;
+}
+#previewPane {
+  width: 60%;
+}
+#previewPane .childNode {
+  width: 25%;
+  height: 30px;
+  background-size: 50px 30px;
+  background-repeat: no-repeat;
+  padding-top: 35px;
+  background-image: url('/api/static/images/folder.jpg');
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: top;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+  font-size: 12px;
+}
+#previewPane .childNode.file {
+  background-image: url('/api/static/images/file.png');
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>index</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+        content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/file_1.css"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/file_5.css"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/32px.png"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/40px.png"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/throbber.gif"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/file_7.css"/>
+    
+    <link rel="stylesheet"
+        media="all"
+        href="../../../assets/file_8.css"/>
+    
+
+    
+    <script src="../../../assets/file_2.js"
+        type="text/javascript"></script>
+    
+    <script src="../../../assets/file_3.js"
+        type="text/javascript"></script>
+    
+    <script src="../../../assets/file_4.js"
+        type="text/javascript"></script>
+    
+    <script src="../../../assets/file_6.js"
+        type="text/javascript"></script>
+    
+
+    <script type="application/json" id="jsTreeJSON">
+        [{"id":"src/routes/home","text":"home","icon":"jstree-folder","parent":"src/routes","a_attr":{"href":"."},"state":{"opened":true}},{"id":"src","text":"src","icon":"jstree-folder","parent":"#","a_attr":{"href":"../.."},"state":{"opened":true}},{"id":"src/promises/fs.js","text":"fs.js","icon":"jstree-file","parent":"src/promises","a_attr":{"href":"../../promises/fs.js.html"},"state":{"selected":false}},{"id":"src/routes","text":"routes","icon":"jstree-folder","parent":"src","a_attr":{"href":".."},"state":{"opened":true}},{"id":"src/routes/download.js","text":"download.js","icon":"jstree-file","parent":"src/routes","a_attr":{"href":"../download.js.html"},"state":{"selected":false}},{"id":"src/routes/getStaticData.js","text":"getStaticData.js","icon":"jstree-file","parent":"src/routes","a_attr":{"href":"../getStaticData.js.html"},"state":{"selected":false}},{"id":"src/promises","text":"promises","icon":"jstree-folder","parent":"src","a_attr":{"href":"../../promises"},"state":{"opened":false}},{"id":"src/routes/home/index.js","text":"index.js","icon":"jstree-file","parent":"src/routes/home","a_attr":{"href":"index.js.html"},"state":{"selected":true}},{"id":"src/routes/list.js","text":"list.js","icon":"jstree-file","parent":"src/routes","a_attr":{"href":"../list.js.html"},"state":{"selected":false}},{"id":"src/server.js","text":"server.js","icon":"jstree-file","parent":"src","a_attr":{"href":"../../server.js.html"},"state":{"selected":false}},{"id":"src/static","text":"static","icon":"jstree-folder","parent":"src","a_attr":{"href":"../../static"},"state":{"opened":false}},{"id":"src/static/script","text":"script","icon":"jstree-folder","parent":"src/static","a_attr":{"href":"../../static/script"},"state":{"opened":false}},{"id":"src/static/script/jquery-3.1.1.js","text":"jquery-3.1.1.js","icon":"jstree-file","parent":"src/static/script","a_attr":{"href":"../../static/script/jquery-3.1.1.js.html"},"state":{"selected":false}}]
+    </script>
+</head>
+<body class="markdown-body">
+<h1>
+    index
+</h1>
+<div class="subHeading">
+    src/routes/home/index.js
+</div>
+<button type="button" class="navigatorToggle">&#9776; files...</button>
+<nav class="navigationTree minimized">
+    <input type="text" id="jsTreeSearch" placeholder="search..."/>
+    <div></div>
+</nav>
+<section>
+    <ul class="sectionDetails codeOnly">
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+                
+            </div><div class="content">
+                <div class="highlight"><pre><span class="hljs-meta">"use strict"</span>;
+<span class="hljs-keyword">const</span> pug = <span class="hljs-built_in">require</span>(<span class="hljs-string">'pug'</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">const</span> list = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../list'</span>);
+<span class="hljs-keyword">const</span> compiledPug = pug.compileFile(<span class="hljs-built_in">require</span>.resolve(<span class="hljs-string">'./home.pug'</span>));
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">dirname, response</span>) =&gt;</span> {
+    <span class="hljs-keyword">let</span> dirList = dirname.split(<span class="hljs-string">'/'</span>).filter(<span class="hljs-function"><span class="hljs-params">dir</span> =&gt;</span> dir),
+        dirPath = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">const</span> promiseArray = [];
+    dirList.unshift(<span class="hljs-string">'/'</span>);
+    dirList = dirList.map(<span class="hljs-function">(<span class="hljs-params">dir, i</span>) =&gt;</span> {
+        dirPath = i &gt; <span class="hljs-number">1</span> ? path.join(dirPath, dir) : path.join(dirPath, <span class="hljs-string">'/'</span>, dir);
+        promiseArray.push(list({
+            <span class="hljs-attr">dirname</span>: dirPath
+        }));
+        <span class="hljs-keyword">return</span> dirPath;
+    });
+
+    promiseArray.push(list({
+        <span class="hljs-attr">dirname</span>: dirPath,
+        <span class="hljs-attr">includeFiles</span>: <span class="hljs-string">"true"</span>
+    }));
+
+    <span class="hljs-built_in">Promise</span>.all(promiseArray).then(<span class="hljs-function"><span class="hljs-params">obj</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> final = {};
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; obj.length - <span class="hljs-number">1</span>; i++) {
+            final[dirList[i]] = obj[i];
+        }
+        response.setHeader(<span class="hljs-string">'Content-Type'</span>, <span class="hljs-string">'text/html'</span>);
+        response.end(compiledPug({
+            <span class="hljs-attr">final</span>: final,
+            <span class="hljs-attr">previewPanel</span>: obj[obj.length - <span class="hljs-number">1</span>]
+        }));
+    }).catch(
+        <span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(err)
+    );
+};</pre></div>
+            </div>
+        </li>
+        
+    </ul>
+</section>
+</body>
+</html>

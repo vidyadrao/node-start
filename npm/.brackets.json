@@ -1,0 +1,5 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/home/viper/Documents/github/vidyadrao/node-start/npm/node_modules/lodash/zipObject.js"
+    ]
+}
